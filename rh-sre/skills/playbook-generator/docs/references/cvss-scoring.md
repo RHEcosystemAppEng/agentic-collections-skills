@@ -1,0 +1,1 @@
+../../../cve-validation/docs/references/cvss-scoring.md

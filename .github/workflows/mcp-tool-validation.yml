@@ -1,0 +1,121 @@
+name: MCP Tool Validation
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - '**/mcps.json'
+      - '**/skills/*/SKILL.md'
+  push:
+    branches: [main]
+    paths:
+      - '**/mcps.json'
+      - '**/skills/*/SKILL.md'
+  workflow_dispatch:
+    inputs:
+      pack:
+        description: 'Pack name to validate (empty = all packs)'
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mcp-tool-validation-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  mcp-tool-check:
+    if: github.event.pull_request.draft == false || github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          fetch-depth: 0  # full history required for git diff in pack detection
+
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.11'
+
+      - name: Install podman
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq podman
+
+      - name: Create dummy kubeconfig
+        run: |
+          mkdir -p "$HOME/.kube"
+          cat > "$HOME/.kube/config" <<'KUBECONFIG'
+          apiVersion: v1
+          kind: Config
+          clusters:
+          - cluster:
+              server: https://localhost:6443
+            name: mcp-validation
+          - cluster:
+              server: https://localhost:6444
+            name: mcp-validation-2
+          contexts:
+          - context:
+              cluster: mcp-validation
+              user: mcp-validation
+            name: mcp-validation
+          - context:
+              cluster: mcp-validation-2
+              user: mcp-validation-2
+            name: mcp-validation-2
+          current-context: mcp-validation
+          users:
+          - name: mcp-validation
+            user:
+              token: dummy-token-for-tool-listing
+          - name: mcp-validation-2
+            user:
+              token: dummy-token-for-tool-listing-2
+          KUBECONFIG
+          echo "KUBECONFIG=$HOME/.kube/config" >> "$GITHUB_ENV"
+
+      - name: Detect changed packs
+        if: github.event_name == 'pull_request'
+        id: detect
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          CHANGED=$(git diff --name-only "origin/$BASE_REF...HEAD" \
+            | grep -oP '^[^/]+(?=/(?:mcps\.json|skills/))' \
+            | sort -u \
+            | tr '\n' ' ')
+          if [ -z "$CHANGED" ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "packs=$CHANGED" >> "$GITHUB_OUTPUT"
+            echo "Changed packs: $CHANGED"
+          fi
+
+      - name: Validate MCP tools
+        env:
+          KUBECONFIG: ${{ env.KUBECONFIG }}
+          EVENT_NAME: ${{ github.event_name }}
+          INPUT_PACK: ${{ inputs.pack }}
+          CHANGED_PACKS: ${{ steps.detect.outputs.packs }}
+          PACKS_CHANGED: ${{ steps.detect.outputs.changed }}
+        run: |
+          # Dispatch: manual with pack > PR changed packs > all packs
+          if [ "$EVENT_NAME" = "workflow_dispatch" ] && [ -n "$INPUT_PACK" ]; then
+            echo "Manual dispatch: validating pack '$INPUT_PACK'"
+            python scripts/validate_mcp_tools.py "$INPUT_PACK"
+          elif [ "$EVENT_NAME" = "pull_request" ] && [ "$PACKS_CHANGED" != "true" ]; then
+            echo "No packs changed in this PR, skipping"
+          elif [ "$EVENT_NAME" = "pull_request" ]; then
+            echo "Validating changed packs: $CHANGED_PACKS"
+            python scripts/validate_mcp_tools.py $CHANGED_PACKS
+          else
+            echo "Validating all packs..."
+            python scripts/validate_mcp_tools.py
+          fi

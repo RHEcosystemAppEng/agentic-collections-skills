@@ -1,0 +1,1 @@
+../../../governance-readiness-assessor/docs/aap/governance-readiness.md

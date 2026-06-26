@@ -1,0 +1,1 @@
+../../debug-build/docs/debugging-patterns.md

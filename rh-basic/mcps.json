@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "red-hat-security": {
+      "type": "http",
+      "url": "https://security-mcp.api.redhat.com/mcp",
+      "description": "Red Hat Security API: CVE metadata, advisories, and errata data. Uses Red Hat Customer Portal browser SSO — no credentials required.",
+      "security": {
+        "isolation": "none",
+        "network": "internet",
+        "credentials": "browser-sso"
+      }
+    }
+  }
+}

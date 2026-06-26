@@ -1,0 +1,27 @@
+# Agentic Collections - Code Owners
+#
+# GitHub automatically requests reviews from code owners when a PR
+# touches matching files. Enable "Require review from Code Owners"
+# in branch protection to make this mandatory.
+
+# Default: all maintainers review anything not matched below
+* @r2dedios @dmartinol @ikrispin @nemerna
+
+# Pack owners
+rh-sre/ @r2dedios
+rh-developer/ @r2dedios
+rh-virt/ @r2dedios
+ocp-admin/ @r2dedios
+rh-ai-engineer/ @r2dedios
+rh-automation/ @r2dedios
+rh-basic/ @r2dedios
+rh-support-engineer/ @r2dedios
+
+# CI, scripts, and repo-wide config
+.github/ @r2dedios @dmartinol
+scripts/ @r2dedios @dmartinol
+marketplace/ @r2dedios @dmartinol
+catalog/ @r2dedios @dmartinol
+CLAUDE.md @r2dedios
+SKILL_DESIGN_PRINCIPLES.md @r2dedios
+CONTRIBUTING.md @r2dedios

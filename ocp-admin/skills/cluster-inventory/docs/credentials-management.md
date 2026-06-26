@@ -1,0 +1,1 @@
+../../cluster-creator/docs/credentials-management.md

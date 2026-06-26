@@ -1,0 +1,1 @@
+../../cluster-creator/docs/certificate-rotation.md

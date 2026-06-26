@@ -1,0 +1,181 @@
+{
+  "author": {
+    "email": "eco-engineering@redhat.com",
+    "name": "Red Hat Ecosystem Engineering"
+  },
+  "categories": [
+    "Red Hat",
+    "Openshift",
+    "Administration",
+    "Management",
+    "Security",
+    "Container Security",
+    "Vulnerability Management"
+  ],
+  "contents": {
+    "description": "The pack provides seven skills for cluster lifecycle, fleet visibility, and security validation on OpenShift,\nusing Assisted Installer and OCM APIs for cluster management, read-only cluster APIs for consolidated reports,\nand Python helper scripts for CVE/SBOM/VEX-based security validation.\n",
+    "orchestration_skills": [],
+    "skills": [
+      {
+        "description": "End-to-end OpenShift cluster creation using Red Hat Assisted Installer (SNO and HA; bare metal, vSphere, OCI, Nutanix).",
+        "name": "cluster-creator",
+        "summary_markdown": "Create and install OpenShift clusters through Assisted Installer with validation, host networking, and progress monitoring.\n**Use when:**\n- \"Create a new OpenShift cluster\"\n- \"Install OpenShift on my servers\"\n- \"Set up a single-node cluster\"\n**What it does:**\n- Drives Assisted Installer flows with explicit approval for VIPs, host roles, and install triggers.\n- Surfaces installation events and validation errors until the cluster reaches ready state.\n"
+      },
+      {
+        "description": "List and inspect OpenShift clusters across self-managed (OCP, SNO) and managed service (ROSA, ARO, OSD) deployments.",
+        "name": "cluster-inventory",
+        "summary_markdown": "List clusters, versions, platforms, and status from OCM and Assisted Installer contexts using a single offline token workflow.\n**Use when:**\n- \"List all clusters\"\n- \"Show cluster status\"\n- \"What clusters are available?\"\n**What it does:**\n- Returns identifiers, versions, platforms, and creation metadata for fleet visibility.\n- Separates self-managed versus managed-service clusters for the right API path.\n"
+      },
+      {
+        "description": "Consolidated health report across kubeconfig contexts, skipping non-OpenShift contexts by default.",
+        "name": "cluster-report",
+        "summary_markdown": "Aggregate node, namespace, and workload signals across contexts that resolve to real OpenShift clusters.\n**Use when:**\n- \"Health report across clusters\"\n- \"Fleet summary from kubeconfig\"\n- \"Compare resource usage between contexts\"\n**What it does:**\n- Verifies each context is OpenShift before collecting metrics to avoid kube API errors.\n- Summarizes capacity, GPU presence, and pod health for operations review.\n"
+      },
+      {
+        "description": "Container image CVE validation using official SBOMs, Red Hat VEX data, and MITRE/OSV.dev metadata.",
+        "name": "container-cve-validator",
+        "summary_markdown": "Full CVE validation pipeline for Red Hat container images with SBOM attestation extraction, VEX matching,\nversion comparison, newer image scanning, and VEX data gap detection.\n**Use when:**\n- \"Is this CVE a real issue in my container image?\"\n- \"Validate RHSA against my image\"\n- \"Batch scan CVEs from a CSV file\"\n**What it does:**\n- Extracts official SBOMs, checks VEX product status, performs version comparison, and scans for patched images.\n"
+      },
+      {
+        "description": "CoreOS (RHCOS) CVE validation for specific OCP releases with RHEL EUS stream awareness.",
+        "name": "coreos-cve-validator",
+        "summary_markdown": "CVE validation for Red Hat Enterprise Linux CoreOS in specific OCP releases.\n**Use when:**\n- \"Does this CVE affect CoreOS in OCP 4.20?\"\n- \"Check CVE against RHCOS\"\n**What it does:**\n- Extracts RPM list from CoreOS images, validates against VEX with RHEL EUS CPE matching.\n"
+      },
+      {
+        "description": "CVE reconnaissance from MITRE, OSV.dev, and Go vulnerability database.",
+        "name": "cve-recon",
+        "summary_markdown": "Structured CVE metadata lookup with affected packages, version ranges, and CVSS scores.\n**Use when:**\n- \"What packages does this CVE affect?\"\n- \"Look up CVE details\"\n**What it does:**\n- Queries three data sources and returns merged results with cross-references.\n"
+      },
+      {
+        "description": "Container image metadata inspection with SBOM reference and registry ownership validation.",
+        "name": "image-inspect",
+        "summary_markdown": "Fetch image labels, validate registry ownership, resolve tag/digest via SBOM.\n**Use when:**\n- \"Inspect this container image\"\n- \"What SBOM does this image have?\"\n**What it does:**\n- Extracts labels, validates ownership, resolves SBOM artifact OCI reference.\n"
+      }
+    ],
+    "skills_decision_guide": [
+      {
+        "reason": "Provisions SNO or HA clusters and monitors install through completion.",
+        "skill_to_use": "cluster-creator",
+        "user_request": "\"Create cluster\" or \"install OpenShift with Assisted Installer\""
+      },
+      {
+        "reason": "Inventory across managed and self-managed targets with consistent fields.",
+        "skill_to_use": "cluster-inventory",
+        "user_request": "\"List clusters\" or \"cluster status in OCM/ROSA\""
+      },
+      {
+        "reason": "Read-only aggregation after OpenShift context verification.",
+        "skill_to_use": "cluster-report",
+        "user_request": "\"Fleet health\" or \"multi-cluster report from kubeconfig\""
+      },
+      {
+        "reason": "Full validation pipeline using SBOM attestations, Red Hat VEX data, and newer image scanning.",
+        "skill_to_use": "container-cve-validator",
+        "user_request": "\"Validate CVE against container image\" or \"Is this CVE a false positive?\""
+      },
+      {
+        "reason": "Extracts CoreOS RPM list, validates against VEX with RHEL EUS stream awareness.",
+        "skill_to_use": "coreos-cve-validator",
+        "user_request": "\"Check CVE against CoreOS in OCP 4.20\" or \"Validate RHSA against RHCOS\""
+      },
+      {
+        "reason": "Quick CVE metadata lookup from MITRE, OSV.dev, and Go vulnerability database.",
+        "skill_to_use": "cve-recon",
+        "user_request": "\"What packages does this CVE affect?\" or \"Look up CVE details\""
+      },
+      {
+        "reason": "Fetches image labels, registry ownership, and SBOM artifact reference.",
+        "skill_to_use": "image-inspect",
+        "user_request": "\"Inspect this container image\" or \"What SBOM does this image have?\""
+      }
+    ]
+  },
+  "deploy_and_use": "#deploy_and_use.md",
+  "description": "Automation capabilities for OpenShift Container Platform cluster management, workload orchestration, security validation, and operational tasks including CVE validation for container images and CoreOS.",
+  "homepage": "https://github.com/RHEcosystemAppEng/agentic-collections",
+  "id": "openshift-administration",
+  "keywords": [
+    "openshift",
+    "assisted-installer",
+    "ocm",
+    "fleet",
+    "kubeconfig",
+    "cve",
+    "sbom",
+    "vex",
+    "security",
+    "vulnerability",
+    "coreos"
+  ],
+  "legal_resources": {
+    "license_agreement_url": "https://github.com/RHEcosystemAppEng/agentic-collections/blob/main/LICENSE",
+    "privacy_policy_url": "https://www.redhat.com/en/about/privacy-policy"
+  },
+  "license": "Apache-2.0",
+  "marketplaces": [
+    "Claude Code",
+    "Cursor"
+  ],
+  "maturity": "GREEN",
+  "mcp_section": "#mcp_section.md",
+  "name": "Agentic skill pack for Red Hat OpenShift",
+  "personas": [
+    "OpenShift Administrator",
+    "Security Engineer",
+    "DevSecOps"
+  ],
+  "provider": "Red Hat",
+  "repository": "https://github.com/RHEcosystemAppEng/agentic-collections",
+  "resources": [
+    {
+      "description": "Platform guides for administrators installing and operating OpenShift.",
+      "title": "OpenShift documentation",
+      "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/"
+    },
+    {
+      "description": "Source repository for these packs, skills, and catalog metadata.",
+      "title": "agentic-collections repository",
+      "url": "https://github.com/RHEcosystemAppEng/agentic-collections"
+    },
+    {
+      "description": "Official Red Hat VEX/CSAF data, security advisories, and CVE information.",
+      "title": "Red Hat Security Data",
+      "url": "https://security.access.redhat.com/"
+    },
+    {
+      "description": "Authoritative CVE metadata source used for vulnerability reconnaissance.",
+      "title": "MITRE CVE API",
+      "url": "https://cveawg.mitre.org/"
+    },
+    {
+      "description": "Open Source Vulnerability database with cross-references to Go, PyPI, npm ecosystems.",
+      "title": "OSV.dev",
+      "url": "https://osv.dev/"
+    }
+  ],
+  "sample_workflows": [
+    {
+      "name": "Assisted install then verify",
+      "workflow": "User: \"Create an HA cluster on bare metal and tell me when it is ready\"\n- `/cluster-creator` walks prerequisites, manifests, and installation monitoring with approvals at critical steps\n- `/cluster-inventory` confirms version and state once the API shows the new cluster\n"
+    },
+    {
+      "name": "Fleet visibility",
+      "workflow": "User: \"List everything in my Red Hat account and flag stale check-ins\"\n- `/cluster-inventory` returns self-managed and managed clusters with metadata for triage\n"
+    },
+    {
+      "name": "Multi-cluster health",
+      "workflow": "User: \"Summarize node and pod health for every OpenShift context in my kubeconfig\"\n- `/cluster-report` skips non-OpenShift contexts and aggregates signals for operators\n"
+    },
+    {
+      "name": "Container CVE validation",
+      "workflow": "User: \"Is CVE-2024-45490 a real issue in registry.redhat.io/ubi9/ubi:latest?\"\n- `/container-cve-validator` extracts SBOM, checks VEX, confirms true/false positive with remediation\n"
+    },
+    {
+      "name": "CoreOS vulnerability check",
+      "workflow": "User: \"Does CVE-2025-61726 affect CoreOS in OCP 4.20.16?\"\n- `/coreos-cve-validator` extracts RPMs, finds affected package, checks VEX under OCP and RHEL EUS CPEs\n"
+    }
+  ],
+  "summary": "The ocp-admin collection covers Assisted Installer cluster creation, multi-cluster discovery across self-managed and managed\nOpenShift, kubeconfig-backed fleet health reporting, and security validation for Red Hat container images and CoreOS using\nofficial SBOMs and VEX data. Use AGENTS.md intent routing to pick the right skill.\n",
+  "support_level": "Unknown",
+  "version": "0.1.0"
+}

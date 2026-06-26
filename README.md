@@ -1,0 +1,118 @@
+# Red Hat Agentic Collections - Skills
+
+**Production-ready AI skills and automation for Red Hat platforms** — specialized plugins for SREs, developers, platform administrators, and AI engineers working with RHEL, OpenShift, and Red Hat automation platforms.
+
+[![Validate Agentic Collections](https://github.com/RHEcosystemAppEng/agentic-collections-skills/actions/workflows/compliance-check.yml/badge.svg)](https://github.com/RHEcosystemAppEng/agentic-collections-skills/actions/workflows/compliance-check.yml)
+[![Skill Specification Linter](https://github.com/RHEcosystemAppEng/agentic-collections-skills/actions/workflows/skill-spec-report.yml/badge.svg)](https://github.com/RHEcosystemAppEng/agentic-collections-skills/actions/workflows/skill-spec-report.yml)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
+
+---
+
+## Available Packs
+
+| Pack | Skills | Description | Persona |
+|------|--------|-------------|---------|
+| **[rh-sre](rh-sre/README.md)** | 13 | CVE remediation, system compliance, RHEL automation | Site Reliability Engineers |
+| **[rh-developer](rh-developer/README.md)** | 14 | Application deployment, S2I builds, Helm charts | Application Developers |
+| **[rh-virt](rh-virt/README.md)** | 10 | VM lifecycle, snapshots, migrations, cloning | Virtualization Admins |
+| **[ocp-admin](ocp-admin/README.md)** | 3 | Multi-cluster management, health reports, monitoring | OpenShift Administrators |
+| **[rh-ai-engineer](rh-ai-engineer/README.md)** | 11 | Model serving, vLLM, KServe, NVIDIA NIM | AI/ML Engineers |
+| **[rh-automation](rh-automation/README.md)** | 11 | Ansible Automation Platform governance, safety checks | Automation Leads |
+| **[rh-basic](rh-basic/README.md)** | 6 | CVE diagnostics, lifecycle, patching, support cases | General Red Hat Users |
+
+See each pack's README for available skills and usage examples.
+
+---
+
+## Prerequisites
+
+1. **Claude Code** (latest version recommended) or **Cursor**
+2. **Container Runtime** (Podman or Docker) for MCP servers
+3. **Network Access** to Red Hat platforms (depending on packs used)
+4. **Credentials**: Red Hat API keys, cluster kubeconfigs, service tokens (per pack)
+
+---
+
+## Contributing
+
+**New skill idea?** Run `/agentic-contribution-skill` in Claude Code.
+**Have an existing skill?** Run `/agentic-contribution-skill` and choose import mode.
+**Full guide:** [CONTRIBUTING.md](CONTRIBUTING.md)
+
+---
+
+## Validation
+
+```bash
+# Install dependencies (first time)
+make install
+
+# Validate pack structure + compliance
+make validate
+
+# Validate only changed skills (recommended for local dev)
+make validate-skill-design-changed
+
+# Validate all skills or a specific pack
+make validate-skill-design
+make validate-skill-design PACK=rh-sre
+
+# Validate MCP tool references against live servers
+make validate-mcp-tools
+```
+
+### Skill Design Validation
+
+Skills are validated against [Design Principles](SKILL_DESIGN_PRINCIPLES.md):
+
+- Document consultation transparency (DP1)
+- Parameter specification and ordering (DP2)
+- Description conciseness (DP3)
+- Dependencies declaration (DP4)
+- Human-in-the-loop requirements for critical operations (DP5)
+- Mandatory sections (Prerequisites, When to Use, Workflow) (DP6)
+- Credential security (no `echo $VAR` exposure) (DP7)
+- Required frontmatter policy (`model` required: `inherit|sonnet|haiku`; `color` required: `cyan|green|blue|yellow|red|magenta`)
+
+---
+
+## Security
+
+This repository uses [gitleaks](https://github.com/gitleaks/gitleaks) and [pre-commit](https://pre-commit.com/) to block accidental secrets.
+
+```bash
+# One-time setup: install deps + git hooks
+make install
+scripts/install-hooks.sh
+```
+
+**MCP Configuration Rules:**
+
+```json
+{
+  "env": {
+    "LIGHTSPEED_CLIENT_ID": "${LIGHTSPEED_CLIENT_ID}",
+    "LIGHTSPEED_CLIENT_SECRET": "${LIGHTSPEED_CLIENT_SECRET}"
+  }
+}
+```
+
+Never hardcode credentials. Always use `${ENV_VAR}` references. See [SECURITY.md](SECURITY.md) for details.
+
+---
+
+## Resources
+
+- **[CLAUDE.md](CLAUDE.md)**: Repository structure and development workflow
+- **[Skill Design Principles](SKILL_DESIGN_PRINCIPLES.md)**: Quality guidelines for skills
+- **[Security Policy](SECURITY.md)**: Credential handling and vulnerability reporting
+
+---
+
+## License
+
+Apache License 2.0 - see [LICENSE](LICENSE) for details.
+
+---
+
+**Maintained by:** [Red Hat Ecosystem Engineering](https://github.com/RHEcosystemAppEng)

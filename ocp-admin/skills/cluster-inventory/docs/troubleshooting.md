@@ -1,0 +1,1 @@
+../../cluster-creator/docs/troubleshooting.md

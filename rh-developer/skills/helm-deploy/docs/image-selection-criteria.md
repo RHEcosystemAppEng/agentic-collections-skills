@@ -1,0 +1,1 @@
+../../recommend-image/docs/image-selection-criteria.md

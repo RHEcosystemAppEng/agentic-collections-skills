@@ -1,0 +1,43 @@
+{
+  "mcpServers": {
+    "lightspeed-mcp": {
+      "command": "podman",
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "--env",
+        "LIGHTSPEED_CLIENT_ID",
+        "--env",
+        "LIGHTSPEED_CLIENT_SECRET",
+        "quay.io/redhat-services-prod/insights-management-tenant/insights-mcp/red-hat-lightspeed-mcp@sha256:98ee33fa7cb690d02d33f57900ab95ad831b8e7985710e0ccb87f53ce1b09865"
+      ],
+      "env": {
+        "LIGHTSPEED_CLIENT_ID": "${LIGHTSPEED_CLIENT_ID}",
+        "LIGHTSPEED_CLIENT_SECRET": "${LIGHTSPEED_CLIENT_SECRET}"
+      },
+      "description": "Red Hat Lightspeed MCP server for CVE data and remediation playbook generation (accessible only through remediation agent and skills)",
+      "security": {
+        "isolation": "container",
+        "network": "local",
+        "credentials": "env-only"
+      }
+    },
+    "aap-mcp-job-management": {
+      "type": "http",
+      "url": "https://${AAP_MCP_SERVER}/job_management/mcp",
+      "headers": {
+        "Authorization": "Bearer ${AAP_API_TOKEN}"
+      },
+      "description": "Ansible Automation Platform (AAP) job management MCP server for managing job templates, job executions, and workflows"
+    },
+    "aap-mcp-inventory-management": {
+      "type": "http",
+      "url": "https://${AAP_MCP_SERVER}/inventory_management/mcp",
+      "headers": {
+        "Authorization": "Bearer ${AAP_API_TOKEN}"
+      },
+      "description": "Ansible Automation Platform (AAP) inventory management MCP server for managing inventories, hosts, and groups"
+    }
+  }
+}

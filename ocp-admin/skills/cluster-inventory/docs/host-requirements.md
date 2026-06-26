@@ -1,0 +1,1 @@
+../../cluster-creator/docs/host-requirements.md

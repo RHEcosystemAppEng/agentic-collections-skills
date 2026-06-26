@@ -1,0 +1,1 @@
+../../cluster-creator/docs/static-networking-guide.md
