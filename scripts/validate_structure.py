@@ -13,7 +13,7 @@ from typing import List
 import re
 
 _REPO_ROOT = Path(__file__).resolve().parent.parent
-_EXCLUDE = {"scripts", "catalog", ".claude", ".github", ".lola", "docs"}
+_EXCLUDE = {"scripts", "catalog", ".claude", ".github", ".lola", "docs", "eval"}
 
 PACK_DIRS = sorted(
     d.name for d in _REPO_ROOT.iterdir()

@@ -1,0 +1,75 @@
+{
+  "submission_name": "rh-virt-vm-snapshot-list",
+  "provenance": {
+    "generated_at": "2026-05-08T18:05:36.199154Z",
+    "commit_sha": "f96d44d8a711de5c6203a5fbb8af8325dd66e395",
+    "pipeline_run_id": "abevalflow-fqsx9",
+    "treatment_image_ref": "image-registry.openshift-image-registry.svc:5000/ab-eval-flow/rh-virt-vm-snapshot-list@sha256:a1769d7efcc54a0d837be0e96f649ce558c1c85d89f309e93bce0b92ba80babf",
+    "control_image_ref": "image-registry.openshift-image-registry.svc:5000/ab-eval-flow/rh-virt-vm-snapshot-list@sha256:6a5c18d82b3786096a60ba0f2688d3dcf36d81fd544ab934d9eab49354ceb964",
+    "harbor_fork_revision": "main"
+  },
+  "summary": {
+    "related_pr": "https://github.com/RHEcosystemAppEng/skill-submissions/pull/25",
+    "llm": "Claude Sonnet 4.6 (vertex_ai)",
+    "treatment": {
+      "n_trials": 3,
+      "n_passed": 3,
+      "n_failed": 0,
+      "n_errors": 0,
+      "pass_rate": 1.0,
+      "mean_reward": 0.9697,
+      "median_reward": 1.0,
+      "std_reward": 0.05248113946933697
+    },
+    "control": {
+      "n_trials": 3,
+      "n_passed": 3,
+      "n_failed": 0,
+      "n_errors": 0,
+      "pass_rate": 1.0,
+      "mean_reward": 0.8485,
+      "median_reward": 0.9091,
+      "std_reward": 0.104962278938674
+    },
+    "mean_reward_gap": 0.12119999999999997,
+    "ttest_p_value": 0.17342021054406004,
+    "fisher_p_value": 1.0,
+    "recommendation": "pass"
+  },
+  "trials": {
+    "treatment": [
+      {
+        "trial_name": "rh-virt-vm-snapshot-list__Bk7t5b4",
+        "reward": 0.9091,
+        "passed": true
+      },
+      {
+        "trial_name": "rh-virt-vm-snapshot-list__bXbLXhS",
+        "reward": 1.0,
+        "passed": true
+      },
+      {
+        "trial_name": "rh-virt-vm-snapshot-list__o4rqbo8",
+        "reward": 1.0,
+        "passed": true
+      }
+    ],
+    "control": [
+      {
+        "trial_name": "rh-virt-vm-snapshot-list__HMMzi7F",
+        "reward": 0.7273,
+        "passed": true
+      },
+      {
+        "trial_name": "rh-virt-vm-snapshot-list__ftvfZiL",
+        "reward": 0.9091,
+        "passed": true
+      },
+      {
+        "trial_name": "rh-virt-vm-snapshot-list__kwS2UB5",
+        "reward": 0.9091,
+        "passed": true
+      }
+    ]
+  }
+}

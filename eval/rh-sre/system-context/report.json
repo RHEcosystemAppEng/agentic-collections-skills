@@ -1,0 +1,75 @@
+{
+  "submission_name": "rh-sre-system-context",
+  "provenance": {
+    "generated_at": "2026-05-12T05:47:21.557314Z",
+    "commit_sha": "71948bce90ff2d2d924fff89e52e0fcddff362db",
+    "pipeline_run_id": "abevalflow-s9478",
+    "treatment_image_ref": "image-registry.openshift-image-registry.svc:5000/ab-eval-flow/rh-sre-system-context@sha256:fda927ab1c6fe04107a480b5467fd03b1f53af3371f08ee6f45cfed78bc10877",
+    "control_image_ref": "image-registry.openshift-image-registry.svc:5000/ab-eval-flow/rh-sre-system-context@sha256:0b1ae9176836f594a7aa69c25d8fa6438127fe5544b33e398bfd6aadb2a02ef6",
+    "harbor_fork_revision": "main"
+  },
+  "summary": {
+    "related_pr": "https://github.com/RHEcosystemAppEng/skill-submissions/pull/14",
+    "llm": "Claude Sonnet 4.6 (vertex_ai)",
+    "treatment": {
+      "n_trials": 3,
+      "n_passed": 3,
+      "n_failed": 0,
+      "n_errors": 0,
+      "pass_rate": 1.0,
+      "mean_reward": 0.9394,
+      "median_reward": 1.0,
+      "std_reward": 0.10496227893867394
+    },
+    "control": {
+      "n_trials": 3,
+      "n_passed": 2,
+      "n_failed": 1,
+      "n_errors": 0,
+      "pass_rate": 0.6666666666666666,
+      "mean_reward": 0.6363666666666666,
+      "median_reward": 0.9091,
+      "std_reward": 0.5529806536700297
+    },
+    "mean_reward_gap": 0.3030333333333334,
+    "ttest_p_value": 0.44378549899864606,
+    "fisher_p_value": 1.0,
+    "recommendation": "pass"
+  },
+  "trials": {
+    "treatment": [
+      {
+        "trial_name": "rh-sre-system-context__DxZ4SJW",
+        "reward": 1.0,
+        "passed": true
+      },
+      {
+        "trial_name": "rh-sre-system-context__LdJVnx4",
+        "reward": 1.0,
+        "passed": true
+      },
+      {
+        "trial_name": "rh-sre-system-context__tWXA9m4",
+        "reward": 0.8182,
+        "passed": true
+      }
+    ],
+    "control": [
+      {
+        "trial_name": "rh-sre-system-context__BwwcEdu",
+        "reward": 0.9091,
+        "passed": true
+      },
+      {
+        "trial_name": "rh-sre-system-context__FbFfhkS",
+        "reward": 0.0,
+        "passed": false
+      },
+      {
+        "trial_name": "rh-sre-system-context__GwVtPYw",
+        "reward": 1.0,
+        "passed": true
+      }
+    ]
+  }
+}

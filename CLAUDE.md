@@ -20,6 +20,7 @@ agentic-collections-skills/
 ├── rh-ai-engineer/      # AI Engineering pack
 ├── rh-automation/       # Automation pack
 ├── rh-support-engineer/ # Support engineering pack
+├── eval/                # Skill evaluation reports (report.json + report.md per skill)
 ├── scripts/             # Validation and CI helper scripts
 ├── catalog/             # JSON Schema for .catalog/collection.yaml validation
 │   └── schema.yaml

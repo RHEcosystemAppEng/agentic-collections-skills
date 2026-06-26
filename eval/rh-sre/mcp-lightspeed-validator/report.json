@@ -1,0 +1,75 @@
+{
+  "submission_name": "rh-sre-mcp-lightspeed-validator",
+  "provenance": {
+    "generated_at": "2026-05-12T04:19:00.743356Z",
+    "commit_sha": "8a3c7c22f92f7ede087294ce13239e946d8e8fd0",
+    "pipeline_run_id": "abevalflow-krhxl",
+    "treatment_image_ref": "image-registry.openshift-image-registry.svc:5000/ab-eval-flow/rh-sre-mcp-lightspeed-validator@sha256:b41b0841814bd6d92ea112ea4d618d42f3de07c4a18ca7161ec959a600b1353b",
+    "control_image_ref": "image-registry.openshift-image-registry.svc:5000/ab-eval-flow/rh-sre-mcp-lightspeed-validator@sha256:8f5fbc4c70c5f62e8637ddde40d38f0bb4f125f2319b342aade905f0db823052",
+    "harbor_fork_revision": "main"
+  },
+  "summary": {
+    "related_pr": "https://github.com/RHEcosystemAppEng/skill-submissions/pull/17",
+    "llm": "Claude Sonnet 4.6 (vertex_ai)",
+    "treatment": {
+      "n_trials": 3,
+      "n_passed": 3,
+      "n_failed": 0,
+      "n_errors": 0,
+      "pass_rate": 1.0,
+      "mean_reward": 1.0,
+      "median_reward": 1.0,
+      "std_reward": 0.0
+    },
+    "control": {
+      "n_trials": 3,
+      "n_passed": 2,
+      "n_failed": 1,
+      "n_errors": 0,
+      "pass_rate": 0.6666666666666666,
+      "mean_reward": 0.38093333333333335,
+      "median_reward": 0.5714,
+      "std_reward": 0.3298979438149522
+    },
+    "mean_reward_gap": 0.6190666666666667,
+    "ttest_p_value": 0.08303890914326376,
+    "fisher_p_value": 1.0,
+    "recommendation": "pass"
+  },
+  "trials": {
+    "treatment": [
+      {
+        "trial_name": "rh-sre-mcp-lightspeed-validator__BCnrS9t",
+        "reward": 1.0,
+        "passed": true
+      },
+      {
+        "trial_name": "rh-sre-mcp-lightspeed-validator__EtQV3UT",
+        "reward": 1.0,
+        "passed": true
+      },
+      {
+        "trial_name": "rh-sre-mcp-lightspeed-validator__zCYw3HX",
+        "reward": 1.0,
+        "passed": true
+      }
+    ],
+    "control": [
+      {
+        "trial_name": "rh-sre-mcp-lightspeed-validator__2Jz6yJj",
+        "reward": 0.5714,
+        "passed": true
+      },
+      {
+        "trial_name": "rh-sre-mcp-lightspeed-validator__DGJ76nt",
+        "reward": 0.0,
+        "passed": false
+      },
+      {
+        "trial_name": "rh-sre-mcp-lightspeed-validator__x6Ew2SN",
+        "reward": 0.5714,
+        "passed": true
+      }
+    ]
+  }
+}

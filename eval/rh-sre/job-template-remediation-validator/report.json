@@ -1,0 +1,75 @@
+{
+  "submission_name": "rh-sre-job-template-remediation-validator",
+  "provenance": {
+    "generated_at": "2026-05-05T19:56:18.660394Z",
+    "commit_sha": "0a6c8f2a54e9c4a903a01554aa397204181ec851",
+    "pipeline_run_id": "abevalflow-tblqn",
+    "treatment_image_ref": "image-registry.openshift-image-registry.svc:5000/ab-eval-flow/rh-sre-job-template-remediation-validator@sha256:7db7e44b9ded890f8c6c9df820da7b9e28f3bcae0ced01706afc23cb18393f84",
+    "control_image_ref": "image-registry.openshift-image-registry.svc:5000/ab-eval-flow/rh-sre-job-template-remediation-validator@sha256:96a268b2517796ea04a9af44a5a8dffbe7be15047a80434cb9e6504dc80f01ce",
+    "harbor_fork_revision": "main"
+  },
+  "summary": {
+    "related_pr": "https://github.com/RHEcosystemAppEng/skill-submissions/pull/11",
+    "llm": "Claude Sonnet 4.6 (vertex_ai)",
+    "treatment": {
+      "n_trials": 3,
+      "n_passed": 3,
+      "n_failed": 0,
+      "n_errors": 0,
+      "pass_rate": 1.0,
+      "mean_reward": 1.0,
+      "median_reward": 1.0,
+      "std_reward": 0.0
+    },
+    "control": {
+      "n_trials": 3,
+      "n_passed": 3,
+      "n_failed": 0,
+      "n_errors": 0,
+      "pass_rate": 1.0,
+      "mean_reward": 0.9047333333333333,
+      "median_reward": 0.8571,
+      "std_reward": 0.08250335346719753
+    },
+    "mean_reward_gap": 0.09526666666666672,
+    "ttest_p_value": 0.1835034190722739,
+    "fisher_p_value": 1.0,
+    "recommendation": "pass"
+  },
+  "trials": {
+    "treatment": [
+      {
+        "trial_name": "rh-sre-job-template-remediation__7zUghav",
+        "reward": 1.0,
+        "passed": true
+      },
+      {
+        "trial_name": "rh-sre-job-template-remediation__R7tjGUb",
+        "reward": 1.0,
+        "passed": true
+      },
+      {
+        "trial_name": "rh-sre-job-template-remediation__dHFdrdu",
+        "reward": 1.0,
+        "passed": true
+      }
+    ],
+    "control": [
+      {
+        "trial_name": "rh-sre-job-template-remediation__7WnE7rc",
+        "reward": 0.8571,
+        "passed": true
+      },
+      {
+        "trial_name": "rh-sre-job-template-remediation__UHPHpWX",
+        "reward": 0.8571,
+        "passed": true
+      },
+      {
+        "trial_name": "rh-sre-job-template-remediation__yhJCtLb",
+        "reward": 1.0,
+        "passed": true
+      }
+    ]
+  }
+}

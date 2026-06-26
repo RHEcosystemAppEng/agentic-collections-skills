@@ -1,0 +1,75 @@
+{
+  "submission_name": "rh-developer-debug-container",
+  "provenance": {
+    "generated_at": "2026-05-11T12:28:51.765279Z",
+    "commit_sha": "11f4c6d8a327729a5bb33bfd6c205f61b1eb86d0",
+    "pipeline_run_id": "abevalflow-8q82z",
+    "treatment_image_ref": "image-registry.openshift-image-registry.svc:5000/ab-eval-flow/rh-developer-debug-container@sha256:b04296f2fc0ba00ad7f6a66b884e7e80169bee905b25be61adc374f8e33d8bb1",
+    "control_image_ref": "image-registry.openshift-image-registry.svc:5000/ab-eval-flow/rh-developer-debug-container@sha256:fccf20ba9327326728eebd4cdc1af1dc200fd432a01b747b4538638399823ff0",
+    "harbor_fork_revision": "main"
+  },
+  "summary": {
+    "related_pr": "https://github.com/RHEcosystemAppEng/skill-submissions/pull/43",
+    "llm": "Claude Sonnet 4.6 (vertex_ai)",
+    "treatment": {
+      "n_trials": 3,
+      "n_passed": 3,
+      "n_failed": 0,
+      "n_errors": 0,
+      "pass_rate": 1.0,
+      "mean_reward": 0.9666666666666667,
+      "median_reward": 1.0,
+      "std_reward": 0.05773502691896256
+    },
+    "control": {
+      "n_trials": 3,
+      "n_passed": 2,
+      "n_failed": 1,
+      "n_errors": 0,
+      "pass_rate": 0.6666666666666666,
+      "mean_reward": 0.6333333333333333,
+      "median_reward": 0.9,
+      "std_reward": 0.5507570547286103
+    },
+    "mean_reward_gap": 0.33333333333333337,
+    "ttest_p_value": 0.4045944704467812,
+    "fisher_p_value": 1.0,
+    "recommendation": "pass"
+  },
+  "trials": {
+    "treatment": [
+      {
+        "trial_name": "rh-developer-debug-container__4RN4HYB",
+        "reward": 0.9,
+        "passed": true
+      },
+      {
+        "trial_name": "rh-developer-debug-container__SZ8dmzs",
+        "reward": 1.0,
+        "passed": true
+      },
+      {
+        "trial_name": "rh-developer-debug-container__rXnhnMp",
+        "reward": 1.0,
+        "passed": true
+      }
+    ],
+    "control": [
+      {
+        "trial_name": "rh-developer-debug-container__4yXQsEd",
+        "reward": 0.9,
+        "passed": true
+      },
+      {
+        "trial_name": "rh-developer-debug-container__pJHnfeS",
+        "reward": 1.0,
+        "passed": true
+      },
+      {
+        "trial_name": "rh-developer-debug-container__uqY2Hee",
+        "reward": 0.0,
+        "passed": false
+      }
+    ]
+  }
+}

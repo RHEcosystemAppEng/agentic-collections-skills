@@ -1,0 +1,75 @@
+{
+  "submission_name": "rh-virt-vm-create",
+  "provenance": {
+    "generated_at": "2026-05-09T16:55:27.277362Z",
+    "commit_sha": "3a79148da85e625188c3158dc2bbee22741c5fbb",
+    "pipeline_run_id": "abevalflow-kcfcm",
+    "treatment_image_ref": "image-registry.openshift-image-registry.svc:5000/ab-eval-flow/rh-virt-vm-create@sha256:189e7c6ce2c2f44572fb90dfa1c649ccc52f7e61ea2bc0e12a237aabdf07613d",
+    "control_image_ref": "image-registry.openshift-image-registry.svc:5000/ab-eval-flow/rh-virt-vm-create@sha256:3c94840d360ae2782bb282eb6a1c2a64b2420677dbb9d3545304f1935aeb7262",
+    "harbor_fork_revision": "main"
+  },
+  "summary": {
+    "related_pr": "https://github.com/RHEcosystemAppEng/skill-submissions/pull/4",
+    "llm": "Claude Sonnet 4.6 (vertex_ai)",
+    "treatment": {
+      "n_trials": 3,
+      "n_passed": 3,
+      "n_failed": 0,
+      "n_errors": 0,
+      "pass_rate": 1.0,
+      "mean_reward": 1.0,
+      "median_reward": 1.0,
+      "std_reward": 0.0
+    },
+    "control": {
+      "n_trials": 3,
+      "n_passed": 3,
+      "n_failed": 0,
+      "n_errors": 0,
+      "pass_rate": 1.0,
+      "mean_reward": 0.5714,
+      "median_reward": 0.5714,
+      "std_reward": 0.0
+    },
+    "mean_reward_gap": 0.4286,
+    "ttest_p_value": 0.0,
+    "fisher_p_value": 1.0,
+    "recommendation": "pass"
+  },
+  "trials": {
+    "treatment": [
+      {
+        "trial_name": "rh-virt-vm-create__Lk9aqhv",
+        "reward": 1.0,
+        "passed": true
+      },
+      {
+        "trial_name": "rh-virt-vm-create__dNkrt3N",
+        "reward": 1.0,
+        "passed": true
+      },
+      {
+        "trial_name": "rh-virt-vm-create__wHuiyqp",
+        "reward": 1.0,
+        "passed": true
+      }
+    ],
+    "control": [
+      {
+        "trial_name": "rh-virt-vm-create__4BtXuH7",
+        "reward": 0.5714,
+        "passed": true
+      },
+      {
+        "trial_name": "rh-virt-vm-create__4LEP3Yg",
+        "reward": 0.5714,
+        "passed": true
+      },
+      {
+        "trial_name": "rh-virt-vm-create__mKEFUgW",
+        "reward": 0.5714,
+        "passed": true
+      }
+    ]
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "submission_name": "rh-sre-remediation",
+  "provenance": {
+    "generated_at": "2026-05-07T11:08:43.791786Z",
+    "commit_sha": "196a2028dbb3b1a3b9d9f04ffa9a9e10e7f87281",
+    "pipeline_run_id": "abevalflow-79xr7",
+    "treatment_image_ref": "image-registry.openshift-image-registry.svc:5000/ab-eval-flow/rh-sre-remediation@sha256:29f01d69b6d8970c26fd4b03efe3bdfee9ff85287f104aab555845377a8136bc",
+    "control_image_ref": "image-registry.openshift-image-registry.svc:5000/ab-eval-flow/rh-sre-remediation@sha256:9248e92d534e69fd3fb8fb9c725f2d3344da5bb1f2a14ad29e1eda89c533f0a3",
+    "harbor_fork_revision": "main"
+  },
+  "summary": {
+    "related_pr": "https://github.com/RHEcosystemAppEng/skill-submissions/pull/5",
+    "llm": "Claude Sonnet 4.6 (vertex_ai)",
+    "treatment": {
+      "n_trials": 3,
+      "n_passed": 3,
+      "n_failed": 0,
+      "n_errors": 0,
+      "pass_rate": 1.0,
+      "mean_reward": 0.9333333333333332,
+      "median_reward": 0.9,
+      "std_reward": 0.05773502691896256
+    },
+    "control": {
+      "n_trials": 3,
+      "n_passed": 3,
+      "n_failed": 0,
+      "n_errors": 0,
+      "pass_rate": 1.0,
+      "mean_reward": 0.5,
+      "median_reward": 0.5,
+      "std_reward": 0.09999999999999998
+    },
+    "mean_reward_gap": 0.43333333333333324,
+    "ttest_p_value": 0.006050596170624369,
+    "fisher_p_value": 1.0,
+    "recommendation": "pass"
+  },
+  "trials": {
+    "treatment": [
+      {
+        "trial_name": "rh-sre-remediation__EHXxEoU",
+        "reward": 0.9,
+        "passed": true
+      },
+      {
+        "trial_name": "rh-sre-remediation__mgVj6Y5",
+        "reward": 0.9,
+        "passed": true
+      },
+      {
+        "trial_name": "rh-sre-remediation__vMpzmEL",
+        "reward": 1.0,
+        "passed": true
+      }
+    ],
+    "control": [
+      {
+        "trial_name": "rh-sre-remediation__3jZ8C6c",
+        "reward": 0.5,
+        "passed": true
+      },
+      {
+        "trial_name": "rh-sre-remediation__GTJyQuq",
+        "reward": 0.4,
+        "passed": true
+      },
+      {
+        "trial_name": "rh-sre-remediation__wzRDKZi",
+        "reward": 0.6,
+        "passed": true
+      }
+    ]
+  }
+}

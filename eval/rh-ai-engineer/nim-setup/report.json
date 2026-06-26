@@ -1,0 +1,75 @@
+{
+  "submission_name": "rh-ai-engineer-nim-setup",
+  "provenance": {
+    "generated_at": "2026-05-11T20:42:51.824599Z",
+    "commit_sha": "817cf57cea7b9acd1bd6ea1df9cdc2f41065f60f",
+    "pipeline_run_id": "abevalflow-64llt",
+    "treatment_image_ref": "image-registry.openshift-image-registry.svc:5000/ab-eval-flow/rh-ai-engineer-nim-setup@sha256:371bcaf8b623441c8c7b5ecb46150f374f47587021c06bde356ed871f2b794ec",
+    "control_image_ref": "image-registry.openshift-image-registry.svc:5000/ab-eval-flow/rh-ai-engineer-nim-setup@sha256:d3a6115eaab870941ce5729ef6307151c256fb1eac922f4a6b6ef29ca9f4cafc",
+    "harbor_fork_revision": "main"
+  },
+  "summary": {
+    "related_pr": "https://github.com/RHEcosystemAppEng/skill-submissions/pull/31",
+    "llm": "Claude Sonnet 4.6 (vertex_ai)",
+    "treatment": {
+      "n_trials": 3,
+      "n_passed": 3,
+      "n_failed": 0,
+      "n_errors": 0,
+      "pass_rate": 1.0,
+      "mean_reward": 1.0,
+      "median_reward": 1.0,
+      "std_reward": 0.0
+    },
+    "control": {
+      "n_trials": 3,
+      "n_passed": 3,
+      "n_failed": 0,
+      "n_errors": 0,
+      "pass_rate": 1.0,
+      "mean_reward": 0.7333333333333334,
+      "median_reward": 0.7,
+      "std_reward": 0.05773502691896263
+    },
+    "mean_reward_gap": 0.2666666666666666,
+    "ttest_p_value": 0.015268072165338174,
+    "fisher_p_value": 1.0,
+    "recommendation": "pass"
+  },
+  "trials": {
+    "treatment": [
+      {
+        "trial_name": "rh-ai-engineer-nim-setup__NkaAh7K",
+        "reward": 1.0,
+        "passed": true
+      },
+      {
+        "trial_name": "rh-ai-engineer-nim-setup__PoPkG73",
+        "reward": 1.0,
+        "passed": true
+      },
+      {
+        "trial_name": "rh-ai-engineer-nim-setup__c8YWzAK",
+        "reward": 1.0,
+        "passed": true
+      }
+    ],
+    "control": [
+      {
+        "trial_name": "rh-ai-engineer-nim-setup__B75tczM",
+        "reward": 0.7,
+        "passed": true
+      },
+      {
+        "trial_name": "rh-ai-engineer-nim-setup__cGMdBtr",
+        "reward": 0.8,
+        "passed": true
+      },
+      {
+        "trial_name": "rh-ai-engineer-nim-setup__wVuCJ8t",
+        "reward": 0.7,
+        "passed": true
+      }
+    ]
+  }
+}

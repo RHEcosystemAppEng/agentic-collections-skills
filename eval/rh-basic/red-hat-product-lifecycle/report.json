@@ -1,0 +1,75 @@
+{
+  "submission_name": "rh-basic-red-hat-product-lifecycle",
+  "provenance": {
+    "generated_at": "2026-05-11T06:40:26.662985Z",
+    "commit_sha": "ee937fa4d4cc8a62f5c61c1772ce4b1e7192b0cf",
+    "pipeline_run_id": "abevalflow-p56xp",
+    "treatment_image_ref": "image-registry.openshift-image-registry.svc:5000/ab-eval-flow/rh-basic-red-hat-product-lifecycle@sha256:ac140ca3b83a40986149fdbe0751a148a0cbae0662193e2920c0e4fc4f67b11f",
+    "control_image_ref": "image-registry.openshift-image-registry.svc:5000/ab-eval-flow/rh-basic-red-hat-product-lifecycle@sha256:07be8f05cc4ba6ed08677a2b4ec18a556e3942b15ffa9a8993d1af5ba5574e03",
+    "harbor_fork_revision": "main"
+  },
+  "summary": {
+    "related_pr": "https://github.com/RHEcosystemAppEng/skill-submissions/pull/34",
+    "llm": "Claude Sonnet 4.6 (vertex_ai)",
+    "treatment": {
+      "n_trials": 3,
+      "n_passed": 3,
+      "n_failed": 0,
+      "n_errors": 0,
+      "pass_rate": 1.0,
+      "mean_reward": 1.0,
+      "median_reward": 1.0,
+      "std_reward": 0.0
+    },
+    "control": {
+      "n_trials": 3,
+      "n_passed": 2,
+      "n_failed": 1,
+      "n_errors": 0,
+      "pass_rate": 0.6666666666666666,
+      "mean_reward": 0.6666666666666666,
+      "median_reward": 1.0,
+      "std_reward": 0.5773502691896257
+    },
+    "mean_reward_gap": 0.33333333333333337,
+    "ttest_p_value": 0.4226497308103742,
+    "fisher_p_value": 1.0,
+    "recommendation": "pass"
+  },
+  "trials": {
+    "treatment": [
+      {
+        "trial_name": "rh-basic-red-hat-product-lifecyc__FLLR5oj",
+        "reward": 1.0,
+        "passed": true
+      },
+      {
+        "trial_name": "rh-basic-red-hat-product-lifecyc__MZwN2os",
+        "reward": 1.0,
+        "passed": true
+      },
+      {
+        "trial_name": "rh-basic-red-hat-product-lifecyc__dpEfjSa",
+        "reward": 1.0,
+        "passed": true
+      }
+    ],
+    "control": [
+      {
+        "trial_name": "rh-basic-red-hat-product-lifecyc__PxC3qnP",
+        "reward": 1.0,
+        "passed": true
+      },
+      {
+        "trial_name": "rh-basic-red-hat-product-lifecyc__jmfVbMW",
+        "reward": 1.0,
+        "passed": true
+      },
+      {
+        "trial_name": "rh-basic-red-hat-product-lifecyc__rS6uJpq",
+        "reward": 0.0,
+        "passed": false
+      }
+    ]
+  }
+}

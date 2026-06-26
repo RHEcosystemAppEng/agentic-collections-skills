@@ -1,0 +1,75 @@
+{
+  "submission_name": "rh-sre-mcp-aap-validator",
+  "provenance": {
+    "generated_at": "2026-05-12T08:32:46.327474Z",
+    "commit_sha": "700e94b84c5765a75f27984ed7eb49b65ae99b57",
+    "pipeline_run_id": "abevalflow-kkjt4",
+    "treatment_image_ref": "image-registry.openshift-image-registry.svc:5000/ab-eval-flow/rh-sre-mcp-aap-validator@sha256:51c56c952e95acd750c0558904809253cd26b62d9b212609501b62b5735b9faf",
+    "control_image_ref": "image-registry.openshift-image-registry.svc:5000/ab-eval-flow/rh-sre-mcp-aap-validator@sha256:e990fd9591f2e0450562bd243be4bc0576255d0267b988d0bdb838823c4594c3",
+    "harbor_fork_revision": "main"
+  },
+  "summary": {
+    "related_pr": "https://github.com/RHEcosystemAppEng/skill-submissions/pull/9",
+    "llm": "Claude Sonnet 4.6 (vertex_ai)",
+    "treatment": {
+      "n_trials": 3,
+      "n_passed": 3,
+      "n_failed": 0,
+      "n_errors": 0,
+      "pass_rate": 1.0,
+      "mean_reward": 1.0,
+      "median_reward": 1.0,
+      "std_reward": 0.0
+    },
+    "control": {
+      "n_trials": 3,
+      "n_passed": 1,
+      "n_failed": 2,
+      "n_errors": 0,
+      "pass_rate": 0.3333333333333333,
+      "mean_reward": 0.2857,
+      "median_reward": 0.0,
+      "std_reward": 0.4948469157224282
+    },
+    "mean_reward_gap": 0.7142999999999999,
+    "ttest_p_value": 0.12959695043255415,
+    "fisher_p_value": 0.4000000000000001,
+    "recommendation": "pass"
+  },
+  "trials": {
+    "treatment": [
+      {
+        "trial_name": "rh-sre-mcp-aap-validator__E26HbnT",
+        "reward": 1.0,
+        "passed": true
+      },
+      {
+        "trial_name": "rh-sre-mcp-aap-validator__cLNHUhJ",
+        "reward": 1.0,
+        "passed": true
+      },
+      {
+        "trial_name": "rh-sre-mcp-aap-validator__fumhhFc",
+        "reward": 1.0,
+        "passed": true
+      }
+    ],
+    "control": [
+      {
+        "trial_name": "rh-sre-mcp-aap-validator__8hLUnoP",
+        "reward": 0.0,
+        "passed": false
+      },
+      {
+        "trial_name": "rh-sre-mcp-aap-validator__jVxtpyd",
+        "reward": 0.0,
+        "passed": false
+      },
+      {
+        "trial_name": "rh-sre-mcp-aap-validator__ynqQ8Au",
+        "reward": 0.8571,
+        "passed": true
+      }
+    ]
+  }
+}

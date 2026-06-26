@@ -1,0 +1,75 @@
+{
+  "submission_name": "rh-developer-debug-network",
+  "provenance": {
+    "generated_at": "2026-05-10T22:59:08.295180Z",
+    "commit_sha": "4639d97e84d05b93143dc6331bca48f937b30685",
+    "pipeline_run_id": "abevalflow-gn8qm",
+    "treatment_image_ref": "image-registry.openshift-image-registry.svc:5000/ab-eval-flow/rh-developer-debug-network@sha256:a16083ad7658ff0fb2b71bc9810eed9c18499df3bca4c79fbc1bc992c8487644",
+    "control_image_ref": "image-registry.openshift-image-registry.svc:5000/ab-eval-flow/rh-developer-debug-network@sha256:dbbb520e5ab466886bfda6c61c9007c8e99bf49ccd3235d22cb0ed4ae5e8e41c",
+    "harbor_fork_revision": "main"
+  },
+  "summary": {
+    "related_pr": "https://github.com/RHEcosystemAppEng/skill-submissions/pull/39",
+    "llm": "Claude Sonnet 4.6 (vertex_ai)",
+    "treatment": {
+      "n_trials": 3,
+      "n_passed": 3,
+      "n_failed": 0,
+      "n_errors": 0,
+      "pass_rate": 1.0,
+      "mean_reward": 1.0,
+      "median_reward": 1.0,
+      "std_reward": 0.0
+    },
+    "control": {
+      "n_trials": 3,
+      "n_passed": 3,
+      "n_failed": 0,
+      "n_errors": 0,
+      "pass_rate": 1.0,
+      "mean_reward": 0.9,
+      "median_reward": 0.9,
+      "std_reward": 0.0
+    },
+    "mean_reward_gap": 0.09999999999999998,
+    "ttest_p_value": 0.0,
+    "fisher_p_value": 1.0,
+    "recommendation": "pass"
+  },
+  "trials": {
+    "treatment": [
+      {
+        "trial_name": "rh-developer-debug-network__Hrjcz4w",
+        "reward": 1.0,
+        "passed": true
+      },
+      {
+        "trial_name": "rh-developer-debug-network__nexHbib",
+        "reward": 1.0,
+        "passed": true
+      },
+      {
+        "trial_name": "rh-developer-debug-network__oXk49do",
+        "reward": 1.0,
+        "passed": true
+      }
+    ],
+    "control": [
+      {
+        "trial_name": "rh-developer-debug-network__KkAb6o9",
+        "reward": 0.9,
+        "passed": true
+      },
+      {
+        "trial_name": "rh-developer-debug-network__WrmyT8T",
+        "reward": 0.9,
+        "passed": true
+      },
+      {
+        "trial_name": "rh-developer-debug-network__yVU6S7q",
+        "reward": 0.9,
+        "passed": true
+      }
+    ]
+  }
+}

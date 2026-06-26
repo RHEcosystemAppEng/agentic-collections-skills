@@ -1,0 +1,75 @@
+{
+  "submission_name": "rh-ai-engineer-model-deploy",
+  "provenance": {
+    "generated_at": "2026-05-10T19:17:49.862673Z",
+    "commit_sha": "ac04791fc01b86e70aad50c1f071f43ac1bb5f04",
+    "pipeline_run_id": "abevalflow-g8q9k",
+    "treatment_image_ref": "image-registry.openshift-image-registry.svc:5000/ab-eval-flow/rh-ai-engineer-model-deploy@sha256:cef9f0fb656efef7a21587f1803f615df84e963b8357d7a42b8e6b0939c78dfe",
+    "control_image_ref": "image-registry.openshift-image-registry.svc:5000/ab-eval-flow/rh-ai-engineer-model-deploy@sha256:438a4b756344c367f5be20f2a456656597d8c6e41006bf76d9e2870a7c2cf34b",
+    "harbor_fork_revision": "main"
+  },
+  "summary": {
+    "related_pr": "https://github.com/RHEcosystemAppEng/skill-submissions/pull/30",
+    "llm": "Claude Sonnet 4.6 (vertex_ai)",
+    "treatment": {
+      "n_trials": 3,
+      "n_passed": 3,
+      "n_failed": 0,
+      "n_errors": 0,
+      "pass_rate": 1.0,
+      "mean_reward": 0.9629666666666666,
+      "median_reward": 1.0,
+      "std_reward": 0.0641436149069674
+    },
+    "control": {
+      "n_trials": 3,
+      "n_passed": 2,
+      "n_failed": 1,
+      "n_errors": 0,
+      "pass_rate": 0.6666666666666666,
+      "mean_reward": 0.6296333333333334,
+      "median_reward": 0.8889,
+      "std_reward": 0.5481007237117401
+    },
+    "mean_reward_gap": 0.33333333333333326,
+    "ttest_p_value": 0.40275745262792584,
+    "fisher_p_value": 1.0,
+    "recommendation": "pass"
+  },
+  "trials": {
+    "treatment": [
+      {
+        "trial_name": "rh-ai-engineer-model-deploy__4WeSntA",
+        "reward": 0.8889,
+        "passed": true
+      },
+      {
+        "trial_name": "rh-ai-engineer-model-deploy__A2Qjprf",
+        "reward": 1.0,
+        "passed": true
+      },
+      {
+        "trial_name": "rh-ai-engineer-model-deploy__GhZxRpq",
+        "reward": 1.0,
+        "passed": true
+      }
+    ],
+    "control": [
+      {
+        "trial_name": "rh-ai-engineer-model-deploy__LMM8khi",
+        "reward": 1.0,
+        "passed": true
+      },
+      {
+        "trial_name": "rh-ai-engineer-model-deploy__k69sETE",
+        "reward": 0.8889,
+        "passed": true
+      },
+      {
+        "trial_name": "rh-ai-engineer-model-deploy__pejhh4V",
+        "reward": 0.0,
+        "passed": false
+      }
+    ]
+  }
+}

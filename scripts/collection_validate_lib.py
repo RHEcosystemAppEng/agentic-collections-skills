@@ -16,7 +16,7 @@ from jsonschema import Draft202012Validator
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
-_PACK_EXCLUDE = {"scripts", "catalog", ".claude", ".github", ".lola", "docs"}
+_PACK_EXCLUDE = {"scripts", "catalog", ".claude", ".github", ".lola", "docs", "eval"}
 
 
 def _discover_packs(root: Path) -> List[str]:
