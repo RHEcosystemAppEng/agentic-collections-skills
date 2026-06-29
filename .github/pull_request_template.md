@@ -28,7 +28,6 @@
 - [ ] MCP server config (`mcps.json`)
 - [ ] Docs / README
 - [ ] CI / tooling
-- [ ] Federation (external pack)
 
 ## Contribution method
 
@@ -47,16 +46,6 @@
 - [ ] Document consultation: file is **read** with the Read tool, then declared to the user
 - [ ] No credentials hardcoded; env vars used via `${VAR}` references
 - [ ] Human-in-the-loop confirmation added for any destructive or critical operations
-
-## Federation request (external pack)
-
-<!-- Fill this section ONLY if this PR adds or updates a federated module. Delete it otherwise. -->
-
-- **Repository URL:** <!-- https://github.com/org/repo -->
-- **Pack path:** <!-- Subdirectory within the repo, or "." for root -->
-- **Ref:** <!-- Required 40-character commit SHA (not a branch or tag) -->
-- **License:** <!-- Verified from repo LICENSE during review; must be compatible with Apache 2.0 -->
-- **Contact:** <!-- @github-handle or email of the pack owner -->
 
 ## Validation
 
