@@ -9,7 +9,7 @@
     "Support"
   ],
   "contents": {
-    "description": "The pack provides 6 skills covering the most common Red Hat support and operations workflows.\nAll skills are self-contained and fall back to WebFetch when the Red Hat Security MCP server is unavailable.\n",
+    "description": "The pack provides 6 skills covering the most common Red Hat support and operations workflows.\nAll skills are self-contained, and those using the Red Hat Security MCP server fall back to WebFetch when it is unavailable.\n",
     "orchestration_skills": [],
     "skills": [
       {
@@ -30,7 +30,7 @@
       {
         "description": "Product Lifecycle Status and Support Phase Lookup",
         "name": "red-hat-product-lifecycle",
-        "summary_markdown": "Report the current lifecycle phase and support dates for any Red Hat product or version.\n**Use when:**\n- Is RHEL 8.6 still supported?\n- When does OpenShift 4.14 reach end of maintenance?\n- What App Streams are available for RHEL 9?\n**What it does:**\n- Retrieves lifecycle dates via the Red Hat Security MCP or Red Hat lifecycle pages\n- Explains what updates each phase receives (security, bug, features)\n- Gives a concrete action recommendation (upgrade, EUS, patch normally)\n- Explains Red Hat's backporting model when relevant\n"
+        "summary_markdown": "Report the current lifecycle phase and support dates for any Red Hat product or version.\n**Use when:**\n- Is RHEL 8.6 still supported?\n- When does OpenShift 4.14 reach end of maintenance?\n- What App Streams are available for RHEL 9?\n**What it does:**\n- Retrieves lifecycle dates using a stdlib Python script that queries the official Red Hat lifecycle API.\n- Explains what updates each phase receives (security, bug, features)\n- Gives a concrete action recommendation (upgrade, EUS, patch normally)\n- Explains Red Hat's backporting model when relevant\n"
       },
       {
         "description": "Support Ticket Severity and SLA Guidance",
