@@ -203,7 +203,7 @@ fi
 pass "Line count: $LINE_COUNT/500"
 
 # 9. Check subdirectories (only scripts/, references/, assets/ allowed)
-ALLOWED_DIRS="scripts references assets"
+ALLOWED_DIRS="scripts references assets docs"
 INVALID_DIRS=""
 HAS_RESOURCES=false
 
