@@ -23,7 +23,7 @@ summary: Lightweight, self-contained skills for everyday Red Hat operations and 
 contents:
   description: |
     The pack provides 6 skills covering the most common Red Hat support and operations workflows.
-    All skills are self-contained and fall back to WebFetch when the Red Hat Security MCP server is unavailable.
+    All skills are self-contained, and those using the Red Hat Security MCP server fall back to WebFetch when it is unavailable.
   skills:
   - name: red-hat-cve-explainer
     description: CVE Explanation and Severity Rating
@@ -70,7 +70,7 @@ contents:
       - When does OpenShift 4.14 reach end of maintenance?
       - What App Streams are available for RHEL 9?
       **What it does:**
-      - Retrieves lifecycle dates via the Red Hat Security MCP or Red Hat lifecycle pages
+      - Retrieves lifecycle dates using a stdlib Python script that queries the official Red Hat lifecycle API.
       - Explains what updates each phase receives (security, bug, features)
       - Gives a concrete action recommendation (upgrade, EUS, patch normally)
       - Explains Red Hat's backporting model when relevant
