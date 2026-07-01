@@ -1,4 +1,4 @@
-name: Validate Agentic Collections
+name: Skill Check Tier 2
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
     branches: [main]
 
 jobs:
-  compliance-check:
+  tier2-skill-check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -25,13 +25,13 @@ jobs:
         run: |
           source $HOME/.cargo/env
           make install
-          make validate
+          make validate-structure
 
-      - name: Validate skill design (changed skills only)
+      - name: Validate changed skills (Tier 2)
         env:
           GITHUB_EVENT_NAME: ${{ github.event_name }}
           GITHUB_BASE_REF: ${{ github.base_ref }}
           GITHUB_EVENT_BEFORE: ${{ github.event.before }}
         run: |
           source $HOME/.cargo/env
-          ./scripts/ci-validate-changed-skills.sh
+          ./scripts/ci-validate-changed-skills.sh tier2
