@@ -142,14 +142,14 @@ SlashCommand("majestic:build-task", args: "...")
 ### Validate Single Skill
 
 ```bash
-./scripts/validate-skill.sh path/to/skill-name
+uv run python scripts/validate_skills_tier1.py path/to/skill-name
 ```
 
 ### Validate All Marketplace Skills
 
 ```bash
 for skill in plugins/*/skills/*/; do
-  ./scripts/validate-skill.sh "$skill"
+  uv run python scripts/validate_skills_tier1.py "$skill"
 done
 ```
 
@@ -161,13 +161,13 @@ Add to pre-commit hook or CI pipeline:
 - name: Lint Skills
   run: |
     for skill in plugins/*/skills/*/; do
-      .claude/skills/skill-linter/scripts/validate-skill.sh "$skill" || exit 1
+      uv run python scripts/validate_skills_tier1.py "$skill" || exit 1
     done
 ```
 
 ## Validation Script
 
-The linter script at `scripts/validate-skill.sh` performs these checks:
+The linter script at `scripts/validate_skills_tier1.py` performs these checks:
 
 1. **Directory exists** with SKILL.md file
 2. **Frontmatter present** with YAML delimiters

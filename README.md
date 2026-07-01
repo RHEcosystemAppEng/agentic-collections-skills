@@ -2,8 +2,8 @@
 
 **Production-ready AI skills and automation for Red Hat platforms** — specialized plugins for SREs, developers, platform administrators, and AI engineers working with RHEL, OpenShift, and Red Hat automation platforms.
 
-[![Validate Agentic Collections](https://github.com/RHEcosystemAppEng/agentic-collections-skills/actions/workflows/compliance-check.yml/badge.svg)](https://github.com/RHEcosystemAppEng/agentic-collections-skills/actions/workflows/compliance-check.yml)
-[![Skill Specification Linter](https://github.com/RHEcosystemAppEng/agentic-collections-skills/actions/workflows/skill-spec-report.yml/badge.svg)](https://github.com/RHEcosystemAppEng/agentic-collections-skills/actions/workflows/skill-spec-report.yml)
+[![Skill Check Tier 2](https://github.com/RHEcosystemAppEng/agentic-collections-skills/actions/workflows/tier-2-check.yaml/badge.svg)](https://github.com/RHEcosystemAppEng/agentic-collections-skills/actions/workflows/tier-2-check.yaml)
+[![Skill Check Tier 1](https://github.com/RHEcosystemAppEng/agentic-collections-skills/actions/workflows/tier-1-check.yaml/badge.svg)](https://github.com/RHEcosystemAppEng/agentic-collections-skills/actions/workflows/tier-1-check.yaml)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
 ---

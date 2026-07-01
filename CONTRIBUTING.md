@@ -53,7 +53,7 @@ If you prefer to create skills manually:
 1. Read the standards: [SKILL_DESIGN_PRINCIPLES.md](SKILL_DESIGN_PRINCIPLES.md)
 2. Create `<pack>/skills/<skill-name>/SKILL.md` following the template
 3. Update `<pack>/AGENTS.md` intent routing table
-4. Validate Tier 1: `./scripts/run-skill-linter.sh <pack>/skills/<skill-name>/`
+4. Validate Tier 1: `uv run python scripts/validate_skills_tier1.py <pack>/skills/<skill-name>/SKILL.md`
 5. Validate Tier 2: `make validate-skill-design-changed`
 
 Both tiers must pass before submitting a PR.

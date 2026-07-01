@@ -1,11 +1,12 @@
-.PHONY: help install validate validate-collection-schema validate-collection-compliance validate-skill-design validate-skill-design-changed validate-mcp-tools clean check-uv
+.PHONY: help install validate validate-structure validate-collection-schema validate-collection-compliance validate-skill-design validate-skill-design-changed validate-mcp-tools clean check-uv
 
 help:
 	@echo "agentic-collections-skills"
 	@echo ""
 	@echo "Available targets:"
 	@echo "  install                       - Install Python dependencies (requires uv)"
-	@echo "  validate                      - Pack structure + skill doc links + collection compliance + MCP tools"
+	@echo "  validate                      - Full validation: Tier 1 (agentskills.io) + Tier 2 (structure, compliance, design)"
+	@echo "  validate-structure            - Structure, links, compliance, MCP tools (no per-skill tier checks)"
 	@echo "  validate-collection-schema    - Schema + roster + banners (subset of compliance)"
 	@echo "  validate-collection-compliance - Full .catalog compliance (includes collection.json drift)"
 	@echo "  validate-skill-design         - Validate all skills (use PACK=rh-sre for a specific pack)"
@@ -33,17 +34,51 @@ install: check-uv
 	@echo "Dependencies installed in isolated environment (includes dev: pre-commit for git hooks)!"
 
 validate: check-uv
-	@echo "Validating agentic collection structure..."
-	@uv run python scripts/validate_structure.py
-	@echo "Validating skill docs links..."
-	@uv run python scripts/validate_skill_doc_links.py
-	@echo "Validating docs tree links..."
-	@uv run python scripts/validate_docs_tree_links.py
-	@echo "Validating collection compliance (.catalog/)..."
-	@uv run python scripts/validate_collection_compliance.py
-	@echo "Validating MCP tool references (skips gracefully without podman)..."
-	@uv run python scripts/validate_mcp_tools.py --summary-only --log-file .validate/mcp-tools.log
-	@echo "Validation complete!"
+	@EXIT=0; \
+	echo ""; \
+	echo "======================================================================"; \
+	echo "  Skill Check Tier 1 — agentskills.io spec"; \
+	echo "======================================================================"; \
+	echo ""; \
+	echo "=== Validating skills against agentskills.io spec..."; \
+	uv run python scripts/validate_skills_tier1.py || EXIT=1; \
+	echo ""; \
+	echo "======================================================================"; \
+	echo "  Skill Check Tier 2 — Structure, compliance, design principles"; \
+	echo "======================================================================"; \
+	echo ""; \
+	echo "=== Validating agentic collection structure..."; \
+	uv run python scripts/validate_structure.py || EXIT=1; \
+	echo "=== Validating skill docs links..."; \
+	uv run python scripts/validate_skill_doc_links.py || EXIT=1; \
+	echo "=== Validating docs tree links..."; \
+	uv run python scripts/validate_docs_tree_links.py || EXIT=1; \
+	echo "=== Validating collection compliance (.catalog/)..."; \
+	uv run python scripts/validate_collection_compliance.py || EXIT=1; \
+	echo "=== Validating MCP tool references (skips gracefully without podman)..."; \
+	uv run python scripts/validate_mcp_tools.py --summary-only --log-file .validate/mcp-tools.log || EXIT=1; \
+	echo "=== Validating skill design principles..."; \
+	uv run python scripts/validate_skills_tier2.py || EXIT=1; \
+	echo ""; \
+	echo "======================================================================"; \
+	echo "  Validation complete!"; \
+	echo "======================================================================"; \
+	exit $$EXIT
+
+validate-structure: check-uv
+	@EXIT=0; \
+	echo "=== Validating agentic collection structure..."; \
+	uv run python scripts/validate_structure.py || EXIT=1; \
+	echo "=== Validating skill docs links..."; \
+	uv run python scripts/validate_skill_doc_links.py || EXIT=1; \
+	echo "=== Validating docs tree links..."; \
+	uv run python scripts/validate_docs_tree_links.py || EXIT=1; \
+	echo "=== Validating collection compliance (.catalog/)..."; \
+	uv run python scripts/validate_collection_compliance.py || EXIT=1; \
+	echo "=== Validating MCP tool references (skips gracefully without podman)..."; \
+	uv run python scripts/validate_mcp_tools.py --summary-only --log-file .validate/mcp-tools.log || EXIT=1; \
+	echo "=== Validation complete!"; \
+	exit $$EXIT
 
 validate-collection-schema: check-uv
 	@uv run python scripts/validate_collection_schema.py
@@ -52,7 +87,7 @@ validate-collection-compliance: check-uv
 	@uv run python scripts/validate_collection_compliance.py
 
 validate-skill-design: check-uv
-	@uv run python scripts/validate_skill_design.py $(if $(PACK),$(PACK))
+	@uv run python scripts/validate_skills_tier2.py $(if $(PACK),$(PACK))
 
 validate-skill-design-changed: check-uv
 	@VALIDATE_INCLUDE_UNCOMMITTED=1 ./scripts/ci-validate-changed-skills.sh

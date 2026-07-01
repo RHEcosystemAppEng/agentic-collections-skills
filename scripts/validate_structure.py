@@ -3,7 +3,7 @@
 Validate agentic collection pack structure (mcps.json, AGENTS.md; plugin.json optional).
 
 Skill-level validation (frontmatter, sections, security) is handled by
-validate-skills.sh and run-skill-linter.sh.
+validate_skills_tier1.py and validate_skills_tier2.py.
 """
 
 import json

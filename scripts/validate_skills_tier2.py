@@ -2,16 +2,31 @@
 """
 Validate skills against SKILL_DESIGN_PRINCIPLES.md.
 
+This is the single Tier 2 validator for the repository (CI runs it via
+ci-validate-changed-skills.sh).  Tier 1 (agentskills.io spec) is handled
+separately by scripts/validate_skills_tier1.py.
+
 Design principles checked:
+  Frontmatter: model mandatory (inherit/sonnet/haiku), color mandatory
+  Frontmatter: description should include 'NOT for' anti-pattern (WARNING)
+  Heading:     first heading should follow '# /<name> Skill' format
+  Heading:     overview paragraph after heading (WARNING)
   DP0: Pack layout (Lola format) - mcps.json only, error if .mcp.json exists
   DP1: Document Consultation - correct format (Action: Read, Output to user)
   DP2: Parameter order - Document Consultation before MCP Tool/Parameters
   DP3: Conciseness - description length, "Use when" examples
   DP4: Dependencies - section with Required MCP Servers/Tools, Related Skills, Reference Docs
-  DP5: Human-in-the-Loop - critical skills should have this section
+  DP5: Human-in-the-Loop - critical skills should have this section + confirmation reqs
   DP6: Mandatory sections - Prerequisites, When to Use This Skill, Workflow
   DP6 (extended): Late section order - Dependencies → Human-in-the-Loop → Example Usage
   DP7: Credential security - no echo $VAR (except in anti-pattern examples)
+  DP7: Hardcoded credentials - password/secret/token with literal values (ERROR)
+  When to Use: must include 'Do NOT use' anti-patterns (ERROR)
+  When to Use: anti-patterns should reference alternative skills (WARNING)
+  When to Use: should list 'Use when' scenarios (WARNING)
+  Prerequisites content: MCP servers, verification, notification, credentials
+  Workflow content: numbered steps, MCP Tools, Parameters, Error Handling
+  File size: warn if SKILL.md exceeds 20 KB
 
 Cannot validate: runtime behavior (AI actually reading docs), parameter correctness vs MCP schemas.
 """
@@ -34,16 +49,29 @@ MAX_DESCRIPTION_TOKENS = 500
 CHARS_PER_TOKEN = 4
 MAX_DESCRIPTION_CHARS = MAX_DESCRIPTION_TOKENS * CHARS_PER_TOKEN
 
+VALID_MODELS = {"inherit", "sonnet", "haiku"}
+VALID_COLORS = {"red", "blue", "green", "yellow", "cyan", "magenta"}
+
 # Skills that perform critical operations (require Human-in-the-Loop section)
 CRITICAL_SKILL_KEYWORDS = [
+    "create",
+    "delete",
+    "update",
+    "restore",
+    "execute",
     "executor",
+    "modify",
+    "run",
+    "deploy",
+    "clone",
     "playbook-executor",
     "job-template-creator",
     "remediation",
 ]
 
-# Required sections (DP6) - Prerequisites is optional
+# Required sections (DP6)
 REQUIRED_SECTIONS = [
+    "Prerequisites",
     "When to Use This Skill",
     "Workflow",
 ]
@@ -85,6 +113,17 @@ CREDENTIAL_EXPOSURE_PATTERN = re.compile(
 
 # Anti-pattern context: if echo $VAR appears near these, it may be documenting the wrong way
 ANTI_PATTERN_MARKERS = ["WRONG", "NEVER", "❌", "don't", "do not", "exposes credentials"]
+
+# Hardcoded credential patterns (DP7)
+HARDCODED_CREDENTIAL_PATTERN = re.compile(
+    r"""(?:password|secret|token|api_key|apikey)\s*[=:]\s*["'][^$\s{]""",
+    re.IGNORECASE,
+)
+# Values that are clearly placeholders, not real credentials
+CREDENTIAL_PLACEHOLDER_PATTERNS = re.compile(
+    r"\[REDACTED\]|\[placeholder\]|<your[-_]|xxx|changeme|replace[-_]me|example",
+    re.IGNORECASE,
+)
 
 # Pack layout (Lola format)
 MCP_FILENAME = "mcps.json"
@@ -279,6 +318,7 @@ def check_dp5_human_in_loop(
     """
     DP5: Human-in-the-Loop Requirements.
     Critical skills (executor, playbook, etc.) must have this section.
+    When the section exists, it must specify confirmation requirements.
     """
     is_critical = any(kw in name.lower() for kw in CRITICAL_SKILL_KEYWORDS)
     has_section = "Human-in-the-Loop" in body or "Human-in-the-Loop Requirements" in body
@@ -287,6 +327,78 @@ def check_dp5_human_in_loop(
         result.warnings.append(
             "DP5: Skill performs critical operations (execution/modification). "
             "Consider adding '## Critical: Human-in-the-Loop Requirements' section."
+        )
+
+    if has_section:
+        hitl_match = re.search(
+            r"## (?:Critical: )?Human-in-the-Loop[^\n]*\n(.*?)(?=\n## |\Z)",
+            body,
+            re.DOTALL,
+        )
+        if hitl_match:
+            hitl_content = hitl_match.group(1).lower()
+            if (
+                "confirmation" not in hitl_content
+                and "confirm" not in hitl_content
+                and "approval" not in hitl_content
+                and "never assume" not in hitl_content
+            ):
+                result.warnings.append(
+                    "DP5: Human-in-the-Loop section should specify confirmation requirements"
+                )
+
+
+def check_when_to_use_content(body: str, result: ValidationResult) -> None:
+    """
+    'When to Use This Skill' section checks:
+    - Must include 'Do NOT use' anti-patterns (ERROR).
+    - Anti-patterns should reference alternative skills (WARNING).
+    - Should list 'Use when' scenarios (WARNING).
+    """
+    if "## When to Use This Skill" not in body:
+        return
+
+    wtu_match = re.search(
+        r"## When to Use This Skill\s*\n(.*?)(?=\n## |\Z)", body, re.DOTALL
+    )
+    if not wtu_match:
+        return
+
+    content = wtu_match.group(1)
+    content_lower = content.lower()
+
+    if not re.search(r"use.*when|trigger.*when|invoke.*when", content_lower):
+        result.warnings.append(
+            "'When to Use' section should list specific scenarios (use when / trigger when)"
+        )
+
+    has_anti = (
+        "do not" in content_lower
+        or "not for" in content_lower
+        or "not when" in content_lower
+    )
+    if not has_anti:
+        result.errors.append(
+            "'When to Use' section must include 'Do NOT use' anti-patterns"
+        )
+    else:
+        if not re.search(r"use.*skill|instead|alternative", content_lower):
+            result.warnings.append(
+                "'When to Use' anti-patterns should reference alternative skills by name"
+            )
+
+
+def check_description_anti_pattern(
+    frontmatter: dict | None, result: ValidationResult
+) -> None:
+    """Description should include 'NOT for' anti-pattern (WARNING)."""
+    if not frontmatter or "description" not in frontmatter:
+        return
+
+    desc = str(frontmatter["description"]).strip().lower()
+    if "not for" not in desc and "do not" not in desc and "not for" not in desc:
+        result.warnings.append(
+            "Description should include 'NOT for' anti-pattern for routing"
         )
 
 
@@ -390,25 +502,63 @@ def check_dp7_credential_exposure(body: str, result: ValidationResult) -> None:
                 )
 
 
+def check_hardcoded_credentials(body: str, result: ValidationResult) -> None:
+    """
+    DP7: Detect hardcoded credentials (ERROR).
+    Flags password="value", secret="value", token="value" etc. with literal values.
+    Skips lines inside anti-pattern examples (WRONG, NEVER, ❌).
+    """
+    lines = body.split("\n")
+    in_code_block = False
+
+    for i, line in enumerate(lines):
+        if line.strip().startswith("```"):
+            in_code_block = not in_code_block
+            continue
+
+        if HARDCODED_CREDENTIAL_PATTERN.search(line):
+            if CREDENTIAL_PLACEHOLDER_PATTERNS.search(line):
+                continue
+            context_before = "\n".join(lines[max(0, i - 10) : i]).lower()
+            is_anti_pattern = any(
+                marker.lower() in context_before for marker in ANTI_PATTERN_MARKERS
+            )
+            if not is_anti_pattern:
+                result.errors.append(
+                    f"DP7: Possible hardcoded credentials at line {i + 1}: "
+                    f"'{line.strip()[:80]}'. "
+                    "Never hardcode credentials; use ${{ENV_VAR}} references."
+                )
+
+
 def check_frontmatter_fields(
     frontmatter: dict | None,
     result: ValidationResult,
 ) -> None:
-    """Check required frontmatter fields (name, description). Model is optional."""
+    """Check required frontmatter fields (name, description, model, color)."""
     if not frontmatter:
         result.errors.append("Missing or invalid YAML frontmatter")
         return
 
-    required = ["name", "description"]
+    required = ["name", "description", "model", "color"]
     for field_name in required:
         if field_name not in frontmatter:
             result.errors.append(f"Frontmatter missing required field: {field_name}")
 
+    if "model" in frontmatter:
+        model_val = str(frontmatter["model"]).strip().lower()
+        if model_val not in VALID_MODELS:
+            result.errors.append(
+                f"Frontmatter 'model' must be one of: {', '.join(sorted(VALID_MODELS))} "
+                f"(got '{frontmatter['model']}')"
+            )
+
     if "color" in frontmatter:
-        valid_colors = {"red", "blue", "green", "yellow", "cyan", "magenta"}
-        if frontmatter["color"].lower() not in valid_colors:
-            result.warnings.append(
-                f"Frontmatter 'color' should be one of: {', '.join(sorted(valid_colors))}"
+        color_val = str(frontmatter["color"]).strip().lower()
+        if color_val not in VALID_COLORS:
+            result.errors.append(
+                f"Frontmatter 'color' must be one of: {', '.join(sorted(VALID_COLORS))} "
+                f"(got '{frontmatter['color']}')"
             )
 
     if "metadata" in frontmatter:
@@ -417,6 +567,109 @@ def check_frontmatter_fields(
             result.warnings.append(
                 "Frontmatter 'metadata' should be a key-value map (dict), not a string or list"
             )
+
+
+def check_heading_format(
+    frontmatter: dict | None, body: str, result: ValidationResult
+) -> None:
+    """Check that the first heading follows '# /<name> Skill' or '# [Name] Skill' format.
+    Also checks for an overview paragraph (1-2 sentences) after the heading."""
+    heading_match = re.search(r"^# (.+)$", body, re.MULTILINE)
+    if not heading_match:
+        result.warnings.append(
+            "Missing level 1 heading (# ) after frontmatter"
+        )
+        return
+
+    heading_text = heading_match.group(1).strip()
+    if not heading_text.endswith("Skill"):
+        skill_name = frontmatter.get("name", "") if frontmatter else ""
+        result.warnings.append(
+            f"Heading '{heading_text}' should follow format: "
+            f"'/{skill_name} Skill' or '[Skill Name] Skill'"
+        )
+
+    after_heading = body[heading_match.end():]
+    first_nonblank = ""
+    for line in after_heading.split("\n"):
+        stripped = line.strip()
+        if stripped:
+            first_nonblank = stripped
+            break
+    if not first_nonblank or first_nonblank.startswith("#"):
+        result.warnings.append(
+            "Missing overview paragraph (1-2 sentences) immediately after heading"
+        )
+
+
+def check_prerequisites_content(body: str, result: ValidationResult) -> None:
+    """Check Prerequisites section content when present."""
+    if "## Prerequisites" not in body:
+        return
+
+    prereqs_match = re.search(
+        r"## Prerequisites\s*\n(.*?)(?=\n## |\Z)", body, re.DOTALL
+    )
+    if not prereqs_match:
+        return
+
+    content = prereqs_match.group(1).lower()
+
+    if "mcp server" not in content and "mcp_server" not in content:
+        result.warnings.append(
+            "Prerequisites should list Required MCP Servers"
+        )
+    if "verification" not in content and "verify" not in content:
+        result.warnings.append(
+            "Prerequisites should include verification steps"
+        )
+    if "human notification" not in content and "error protocol" not in content:
+        result.warnings.append(
+            "Prerequisites should include human notification protocol"
+        )
+    has_cred_warning = (
+        ("never" in content and ("display" in content or "expose" in content))
+        or "credential" in content
+    )
+    if not has_cred_warning:
+        result.warnings.append(
+            "Prerequisites should warn against exposing credentials"
+        )
+
+
+def check_workflow_content(body: str, result: ValidationResult) -> None:
+    """Check Workflow section has numbered steps, MCP tools, parameters, error handling."""
+    if "## Workflow" not in body:
+        return
+
+    workflow_match = re.search(
+        r"## Workflow\s*\n(.*?)(?=\n## |\Z)", body, re.DOTALL
+    )
+    if not workflow_match:
+        return
+
+    content = workflow_match.group(1)
+
+    if not re.search(r"^### Step\s+\d|^### \d+[.:]", content, re.MULTILINE):
+        result.warnings.append(
+            "Workflow should have numbered steps (### Step N: or ### 1.)"
+        )
+
+    has_mcp_tool = "**MCP Tool**" in content or "MCP Tool" in content
+    if not has_mcp_tool:
+        result.warnings.append(
+            "Workflow should specify MCP Tools used"
+        )
+
+    if has_mcp_tool and "**Parameters**" not in content and "Parameters:" not in content:
+        result.warnings.append(
+            "Workflow steps with MCP Tools should specify parameters"
+        )
+
+    if "error handling" not in content.lower() and "error_handling" not in content.lower():
+        result.warnings.append(
+            "Workflow steps should include error handling"
+        )
 
 
 def validate_skill(skill_path: Path) -> ValidationResult:
@@ -431,7 +684,16 @@ def validate_skill(skill_path: Path) -> ValidationResult:
 
     frontmatter, body = extract_frontmatter(content)
 
+    content_bytes = len(content.encode("utf-8"))
+    if content_bytes > 20480:
+        result.warnings.append(
+            f"SKILL.md is large ({content_bytes} bytes). "
+            "Consider moving content to references/ or docs/"
+        )
+
     check_frontmatter_fields(frontmatter, result)
+    check_heading_format(frontmatter, body, result)
+    check_description_anti_pattern(frontmatter, result)
     check_dp1_document_consultation(body, result)
     check_dp2_parameter_order(body, result)
     check_dp3_conciseness(frontmatter, result)
@@ -442,8 +704,34 @@ def validate_skill(skill_path: Path) -> ValidationResult:
     check_dp6_mandatory_sections(body, result)
     check_dp6_late_section_order(body, result)
     check_dp7_credential_exposure(body, result)
+    check_hardcoded_credentials(body, result)
+    check_when_to_use_content(body, result)
+    check_prerequisites_content(body, result)
+    check_workflow_content(body, result)
 
     return result
+
+
+RED = "\033[0;31m"
+GREEN = "\033[0;32m"
+YELLOW = "\033[0;33m"
+BLUE = "\033[0;34m"
+BOLD = "\033[1m"
+NC = "\033[0m"
+
+SEPARATOR = "=" * 70
+
+
+def _rel(path: Path) -> Path:
+    cwd = Path.cwd()
+    return path.relative_to(cwd) if path.is_relative_to(cwd) else path
+
+
+def _pack_name(skill_path: Path) -> str:
+    """Extract pack name from a skill path like rh-sre/skills/cve-impact/SKILL.md."""
+    if skill_path.parent.parent.name == "skills":
+        return str(skill_path.parent.parent.parent)
+    return str(skill_path.parent)
 
 
 def main() -> int:
@@ -454,7 +742,7 @@ def main() -> int:
     parser.add_argument(
         "paths",
         nargs="*",
-        default=["rh-sre", "rh-developer", "ocp-admin", "rh-virt", "rh-ai-engineer", "rh-automation"],
+        default=["rh-sre", "rh-developer", "ocp-admin", "rh-virt", "rh-ai-engineer", "rh-automation", "rh-basic"],
         help="Pack directories or specific SKILL.md paths to validate",
     )
     parser.add_argument(
@@ -475,7 +763,6 @@ def main() -> int:
             if skills_dir.exists():
                 skill_files.extend(skills_dir.glob("*/SKILL.md"))
         else:
-            # Maybe it's a pack name
             pack_path = Path(p)
             if (pack_path / "skills").exists():
                 skill_files.extend((pack_path / "skills").glob("*/SKILL.md"))
@@ -483,7 +770,7 @@ def main() -> int:
     all_errors: list[tuple[Path, str]] = []
     all_warnings: list[tuple[Path, str]] = []
 
-    # Collect pack dirs for layout validation (all pack dirs from args, plus from skill paths)
+    # Collect pack dirs for layout validation
     pack_dirs: set[Path] = set()
     for p in args.paths:
         path = Path(p)
@@ -502,53 +789,95 @@ def main() -> int:
 
     if not skill_files:
         if all_errors:
-            print("❌ Pack layout validation failed:")
+            print(f"{RED}❌ Pack layout validation failed:{NC}")
             for path, err in all_errors:
                 print(f"  • {path}: {err}")
             return 1
         print("No SKILL.md files found to validate.")
         return 0
 
-    print("🔍 Validating skills against Design Principles...")
+    print(SEPARATOR)
+    print(f"{BOLD}  Skill Design Principles Validator (Tier 2){NC}")
+    print(SEPARATOR)
     print()
 
+    # Validate and group results by pack
+    results_by_pack: dict[str, list[tuple[Path, ValidationResult]]] = {}
     for skill_path in sorted(skill_files):
         result = validate_skill(skill_path)
-        rel_path = skill_path.relative_to(Path.cwd()) if skill_path.is_relative_to(Path.cwd()) else skill_path
+        pack = _pack_name(skill_path)
+        results_by_pack.setdefault(pack, []).append((skill_path, result))
 
         if result.errors:
-            print(f"  {rel_path}: ❌")
             for err in result.errors:
                 all_errors.append((skill_path, err))
-                print(f"    • {err}")
-        elif result.warnings:
-            print(f"  {rel_path}: ⚠️")
+        if result.warnings:
             for warn in result.warnings:
                 all_warnings.append((skill_path, warn))
                 if args.warnings_as_errors:
                     all_errors.append((skill_path, f"[WARN] {warn}"))
-                print(f"    • {warn}")
-        else:
-            print(f"  {rel_path}: ✓")
 
-    # Report pack layout errors first if any
+    # Print results grouped by pack
+    total_skills = 0
+    passed_skills = 0
+    warned_skills = 0
+    failed_skills = 0
+
+    for pack, pack_results in sorted(results_by_pack.items()):
+        print(SEPARATOR)
+        print(f"{BOLD}  Pack: {pack}{NC}")
+        print(SEPARATOR)
+
+        for skill_path, result in pack_results:
+            skill_name = skill_path.parent.name
+            total_skills += 1
+
+            if result.errors:
+                failed_skills += 1
+                print(f"  {RED}❌{NC} {skill_name}")
+                for err in result.errors:
+                    print(f"     {RED}•{NC} {err}")
+                for warn in result.warnings:
+                    print(f"     {YELLOW}•{NC} {warn}")
+            elif result.warnings:
+                warned_skills += 1
+                print(f"  {YELLOW}⚠{NC}  {skill_name}")
+                for warn in result.warnings:
+                    print(f"     {YELLOW}•{NC} {warn}")
+            else:
+                passed_skills += 1
+                print(f"  {GREEN}✓{NC}  {skill_name}")
+
+        print()
+
+    # DP0 pack layout errors
     if all_errors and any(e.startswith("DP0:") for _, e in all_errors):
         layout_errs = [(p, e) for p, e in all_errors if e.startswith("DP0:")]
-        print()
-        print("Pack layout (Lola format):")
+        print(SEPARATOR)
+        print(f"{BOLD}  Pack Layout (DP0){NC}")
+        print(SEPARATOR)
         for path, err in layout_errs:
-            rel = path.relative_to(Path.cwd()) if path.is_relative_to(Path.cwd()) else path
-            print(f"  {rel}: ❌ {err}")
+            print(f"  {RED}❌{NC} {_rel(path)}: {err}")
         print()
 
+    # Summary
+    print(SEPARATOR)
+    print(f"{BOLD}  Summary{NC}")
+    print(SEPARATOR)
+    print(f"  Total skills:  {total_skills}")
+    print(f"  {GREEN}✓{NC}  Passed:     {passed_skills}")
+    print(f"  {YELLOW}⚠{NC}  Warnings:   {warned_skills}")
+    print(f"  {RED}❌{NC} Failed:     {failed_skills}")
+    print(SEPARATOR)
+
     if all_errors or (args.warnings_as_errors and all_warnings):
-        print("❌ Validation failed")
+        print(f"{RED}{BOLD}❌ Validation failed{NC}")
         return 1
 
     if all_warnings:
-        print("✅ Validation passed (with warnings)")
+        print(f"{GREEN}{BOLD}✅ Validation passed{NC} {YELLOW}(with warnings){NC}")
     else:
-        print("✅ All skills validated successfully")
+        print(f"{GREEN}{BOLD}✅ All skills validated successfully{NC}")
     return 0
 
 

@@ -256,8 +256,7 @@ color: green                    # MANDATORY - cyan|green|blue|yellow|red|magenta
 - `haiku` - Simple, fast operations
 
 **Validation Enforcement:**
-- `scripts/validate_skill_design.py` and `scripts/validate-skills.sh` MUST both enforce required `model` presence and valid model values.
-- Any drift between validators is treated as a policy inconsistency and must be corrected before merge.
+- `scripts/validate_skills_tier2.py` enforces required `model` presence and valid model values (CI runs this via `ci-validate-changed-skills.sh`).
 
 **Color Values (Risk-Based):**
 - `cyan` - Read-only (list, view, get)
