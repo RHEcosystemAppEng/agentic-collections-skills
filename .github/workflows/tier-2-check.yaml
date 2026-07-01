@@ -4,9 +4,20 @@ on:
   pull_request:
   push:
     branches: [main]
+  workflow_dispatch:
+    inputs:
+      validate_all:
+        description: 'Validate all skills (true) or changed only (false)'
+        required: false
+        default: 'true'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
 
 jobs:
   tier2-skill-check:
+    if: github.event.pull_request.draft == false || github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -27,11 +38,16 @@ jobs:
           make install
           make validate-structure
 
-      - name: Validate changed skills (Tier 2)
+      - name: Validate skills (Tier 2)
         env:
           GITHUB_EVENT_NAME: ${{ github.event_name }}
           GITHUB_BASE_REF: ${{ github.base_ref }}
           GITHUB_EVENT_BEFORE: ${{ github.event.before }}
         run: |
           source $HOME/.cargo/env
-          ./scripts/ci-validate-changed-skills.sh tier2
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ github.event.inputs.validate_all }}" = "true" ]; then
+            echo "Running Tier 2 on ALL skills (manual dispatch)..."
+            uv run python scripts/validate_skills_tier2.py
+          else
+            ./scripts/ci-validate-changed-skills.sh tier2
+          fi
