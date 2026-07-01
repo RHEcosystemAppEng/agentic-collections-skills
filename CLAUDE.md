@@ -79,7 +79,7 @@ The catalog's internal process applies its own evaluation and assigns a scorecar
 
 1. **Run automated validation (Tier 1):**
    ```bash
-   ./scripts/run-skill-linter.sh <pack>/skills/<skill-name>/
+   uv run python scripts/validate_skills_tier1.py <pack>/skills/<skill-name>/SKILL.md
    ```
 
 2. **Manual review (Tier 2):**
@@ -193,7 +193,7 @@ last_updated: YYYY-MM-DD
 4. Include concrete examples and complete error handling
 5. Update the pack's `AGENTS.md` intent routing table to include the new skill
 6. Test with `Skill` tool invocation
-7. Validate with `./scripts/run-skill-linter.sh <pack>/skills/<skill-name>/`
+7. Validate with `uv run python scripts/validate_skills_tier1.py <pack>/skills/<skill-name>/SKILL.md`
 
 **Collection-Specific Standards:**
 - **rh-virt**: Follow `rh-virt/SKILL_TEMPLATE.md` for enhanced quality standards including mandatory Common Issues and Example Usage sections
@@ -263,5 +263,5 @@ Use `rh-virt` as reference for packs requiring high consistency and maintainabil
 
 **Validation:**
 - Design principles and requirements: [SKILL_DESIGN_PRINCIPLES.md](./SKILL_DESIGN_PRINCIPLES.md)
-- Automated linter (Tier 1): `./scripts/run-skill-linter.sh`
+- Automated linter (Tier 1): `uv run python scripts/validate_skills_tier1.py`
 - Full validation: `make validate`

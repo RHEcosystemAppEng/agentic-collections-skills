@@ -35,6 +35,6 @@ repos:
 
       - id: skill-spec-linter
         name: skill spec linter (Tier-1 agentskills.io)
-        entry: bash -c 'for f in "$@"; do ./scripts/run-skill-linter.sh "$(dirname "$f")/"; done' --
+        entry: bash -c 'uv run python scripts/validate_skills_tier1.py "$@"' --
         language: system
         files: ^(rh-[-a-z0-9]+|ocp-admin)/skills/[^/]+/SKILL\.md$

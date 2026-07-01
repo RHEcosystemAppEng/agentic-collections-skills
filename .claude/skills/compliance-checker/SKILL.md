@@ -6,7 +6,7 @@ description: |
   - "Verify my skills follow design principles"
   - Before committing skill changes
 
-  Runs the validate_skill_design.py script against SKILL_DESIGN_PRINCIPLES.md.
+  Runs the validate_skills_tier2.py script against SKILL_DESIGN_PRINCIPLES.md.
 ---
 
 # Skill Design Compliance Checker
@@ -44,7 +44,7 @@ Invoke this skill when the user wants to:
 ## Dependencies
 
 - `uv` must be installed (run `make install` if needed)
-- Script: `scripts/validate_skill_design.py`
+- Script: `scripts/validate_skills_tier2.py`
 - Reference: [SKILL_DESIGN_PRINCIPLES.md](../../../SKILL_DESIGN_PRINCIPLES.md)
 
 ## Design Principles Checked

@@ -255,12 +255,12 @@ Generate SKILL.md following the mandatory section template in SKILL_DESIGN_PRINC
 
 **Tier 1 - agentskills.io**:
 ```bash
-./scripts/run-skill-linter.sh <pack>/skills/<skill-name>/
+uv run python scripts/validate_skills_tier1.py <pack>/skills/<skill-name>/SKILL.md
 ```
 
 **Tier 2 - Design Principles**:
 ```bash
-python scripts/validate_skill_design.py <pack>/skills/<skill-name>/SKILL.md
+uv run python scripts/validate_skills_tier2.py <pack>/skills/<skill-name>/SKILL.md
 ```
 
 **Report clearly**:
@@ -393,8 +393,8 @@ None - agentic-contribution-skill is self-contained and doesn't invoke other ski
 ### Repository Files
 
 - `SKILL_DESIGN_PRINCIPLES.md` - Design principles (DP1-11)
-- `scripts/run-skill-linter.sh` - Tier 1 validation
-- `scripts/validate_skill_design.py` - Tier 2 validation
+- `scripts/validate_skills_tier1.py` - Tier 1 validation (agentskills.io)
+- `scripts/validate_skills_tier2.py` - Tier 2 validation (design principles)
 - `Makefile` - Validation targets
 - `marketplace/rh-agentic-collection.yml` - Lola marketplace registry
 
